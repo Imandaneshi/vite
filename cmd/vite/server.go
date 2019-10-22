@@ -59,6 +59,13 @@ func Server() *cli.Command {
 				EnvVars:     []string{"VITE_SERVER_HOST"},
 				Destination: &config.Server.ServerHost,
 			},
+			&cli.IntFlag{
+				Name:        "random-code-length",
+				Value:       6,
+				Usage:       "Link's random code length",
+				EnvVars:     []string{"VITE_CODE_LENGTH"},
+				Destination: &config.Server.RandomCodeLength,
+			},
 		},
 		Action: func(c *cli.Context) error {
 			ginEngine := gin.Default()

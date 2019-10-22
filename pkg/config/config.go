@@ -9,6 +9,7 @@ type server struct {
 	StaticPath string
 	ServerPort int
 	ServerHost string
+	RandomCodeLength int
 }
 
 type database struct {

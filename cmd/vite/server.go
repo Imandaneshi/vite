@@ -2,10 +2,10 @@ package main
 
 import (
 	"fmt"
-	"github.com/gin-gonic/contrib/static"
 	"github.com/gin-gonic/gin"
 	"github.com/imandaneshi/vite/pkg/config"
 	"github.com/imandaneshi/vite/pkg/model"
+	"github.com/imandaneshi/vite/pkg/router"
 	log "github.com/sirupsen/logrus"
 	"gopkg.in/urfave/cli.v2"
 )
@@ -61,10 +61,9 @@ func Server() *cli.Command {
 			},
 		},
 		Action: func(c *cli.Context) error {
-			router := gin.Default()
-			// serve frontend static files
-			router.Use(static.Serve("/", static.LocalFile(config.Server.StaticPath, true)))
-			err := router.Run(fmt.Sprintf("%s:%d", config.Server.ServerHost, config.Server.ServerPort))
+			ginEngine := gin.Default()
+			router.InitRoutes(ginEngine)
+			err := ginEngine.Run(fmt.Sprintf("%s:%d", config.Server.ServerHost, config.Server.ServerPort))
 			if err != nil {
 				log.Fatal("Failed running gin web server", err)
 			}

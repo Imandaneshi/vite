@@ -1,6 +1,7 @@
 package main
 
 import (
+	"github.com/gin-gonic/contrib/static"
 	"github.com/gin-gonic/gin"
 	"github.com/imandaneshi/vite/pkg/config"
 	"github.com/imandaneshi/vite/pkg/model"
@@ -13,7 +14,7 @@ func Server() *cli.Command {
 	return &cli.Command{
 		Name:  "server",
 		Usage: "Starts the vite web server",
-		Before: func (c *cli.Context) error{
+		Before: func(c *cli.Context) error {
 			err := model.SetupMongo()
 			if err != nil {
 				log.Fatal("Error connecting to mongodb", err)
@@ -38,13 +39,11 @@ func Server() *cli.Command {
 			},
 		},
 		Action: func(c *cli.Context) error {
-			r := gin.Default()
-			r.GET("/ping", func(c *gin.Context) {
-				c.JSON(200, gin.H{
-					"message": "pong",
-				})
-			})
-			r.Run()
+			router := gin.Default()
+
+			// serve frontend static files
+			router.Use(static.Serve("/", static.LocalFile("./client/build", true)))
+
 			return nil
 		},
 	}

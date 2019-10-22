@@ -7,6 +7,8 @@ type logging struct {
 type server struct {
 	Debug bool
 	StaticPath string
+	ServerPort int
+	ServerHost string
 }
 
 type database struct {

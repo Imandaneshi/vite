@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"github.com/gin-gonic/contrib/static"
 	"github.com/gin-gonic/gin"
 	"github.com/imandaneshi/vite/pkg/config"
@@ -44,13 +45,29 @@ func Server() *cli.Command {
 				EnvVars:     []string{"VITE_STATIC_PATH"},
 				Destination: &config.Server.StaticPath,
 			},
+			&cli.IntFlag{
+				Name:        "server-port",
+				Value:       8062,
+				Usage:       "Web server port",
+				EnvVars:     []string{"VITE_SERVER_PORT", "PORT"},
+				Destination: &config.Server.ServerPort,
+			},
+			&cli.StringFlag{
+				Name:        "server-host",
+				Value:       "0.0.0.0",
+				Usage:       "Web server host",
+				EnvVars:     []string{"VITE_SERVER_HOST"},
+				Destination: &config.Server.ServerHost,
+			},
 		},
 		Action: func(c *cli.Context) error {
 			router := gin.Default()
-
 			// serve frontend static files
 			router.Use(static.Serve("/", static.LocalFile(config.Server.StaticPath, true)))
-
+			err := router.Run(fmt.Sprintf("%s:%d", config.Server.ServerHost, config.Server.ServerPort))
+			if err != nil {
+				log.Fatal("Failed running gin web server", err)
+			}
 			return nil
 		},
 	}

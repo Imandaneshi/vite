@@ -37,12 +37,19 @@ func Server() *cli.Command {
 				EnvVars:     []string{"VITE_MONGO_DATABASE"},
 				Destination: &config.Database.DatabaseName,
 			},
+			&cli.StringFlag{
+				Name:        "static-path",
+				Value:       "./client/build",
+				Usage:       "Static files path",
+				EnvVars:     []string{"VITE_STATIC_PATH"},
+				Destination: &config.Server.StaticPath,
+			},
 		},
 		Action: func(c *cli.Context) error {
 			router := gin.Default()
 
 			// serve frontend static files
-			router.Use(static.Serve("/", static.LocalFile("./client/build", true)))
+			router.Use(static.Serve("/", static.LocalFile(config.Server.StaticPath, true)))
 
 			return nil
 		},

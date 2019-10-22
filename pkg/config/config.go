@@ -6,6 +6,7 @@ type logging struct {
 
 type server struct {
 	Debug bool
+	StaticPath string
 }
 
 type database struct {

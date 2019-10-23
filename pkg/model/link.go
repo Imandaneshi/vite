@@ -16,9 +16,9 @@ func init() {
 }
 
 type Link struct {
-	ObjectId *primitive.ObjectID `json:"ID" bson:"_id,omitempty"`
-	Address  string              `bson:"address,omitempty"`
-	Code     string              `bson:"code,omitempty"`
+	ObjectId *primitive.ObjectID `json:"id" bson:"_id,omitempty" gorm:"primary_key"`
+	Address  string              `bson:"address,omitempty" json:"address"`
+	Code     string              `bson:"code,omitempty" json:"code"`
 }
 
 func GenerateRandomShortenLink(address string) (*Link, error) {

@@ -3,9 +3,10 @@ package errors
 import "fmt"
 
 type Error struct {
-	Code    string
-	Message string
+	Code    string `json:"code"`
+	Message string `json:"message"`
 	source   error
+
 }
 
 func (e *Error) Error() string {
@@ -32,4 +33,14 @@ func New(c string, msg string, err error) error {
 const alreadyExistsCode = "already_exists"
 func AlreadyExistsError(msg string, err error, arg ...interface{}) error {
 	return New(alreadyExistsCode, fmt.Sprintf(msg, arg...), err)
+}
+
+const validationErrorCode = "validation_error"
+func ValidationError(msg string, err error, arg ...interface{}) error {
+	return New(validationErrorCode, fmt.Sprintf(msg, arg...), err)
+}
+
+const InternalServerErrorCode = "internal_server_error"
+func InternalServerError() error {
+	return New(InternalServerErrorCode, "Internal server error", nil)
 }

@@ -14,5 +14,5 @@ func InitRoutes(g *gin.Engine){
 	apiRoute := g.Group("api/v1") // api version 1
 
 	// endpoint for shortening the link
-	apiRoute.POST("/links", api.LinkShortener)
+	apiRoute.POST("/links", api.CreateShortenLink)
 }

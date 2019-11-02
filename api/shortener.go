@@ -29,7 +29,7 @@ func CreateShortenLink(c *gin.Context){
 	link, err := model.GenerateRandomShortenLink(json.Address)
 	if err != nil {
 		log.WithFields(logFields).Info("internal error creating a shorten link", err)
-		c.JSON(500, errors.InternalServerError())
+		c.JSON(500, Response{Ok:false, Error: errors.InternalServerError()})
 	}
 
 	log.WithFields(logFields).Info("successfully created a shorten link")

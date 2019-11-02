@@ -16,7 +16,7 @@ require (
 	github.com/xdg/scram v0.0.0-20180814205039-7eeb5667e42c // indirect
 	github.com/xdg/stringprep v1.0.0 // indirect
 	go.mongodb.org/mongo-driver v1.1.2
-	golang.org/x/crypto v0.0.0-20191011191535-87dc89f01550 // indirect
+	golang.org/x/crypto v0.0.0-20191011191535-87dc89f01550
 	golang.org/x/sync v0.0.0-20190911185100-cd5d95a43a6e // indirect
 	gopkg.in/go-playground/validator.v9 v9.30.0
 	gopkg.in/urfave/cli.v2 v2.0.0-20180128182452-d3ae77c26ac8

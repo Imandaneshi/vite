@@ -10,7 +10,7 @@ type Error struct {
 }
 
 func (e *Error) Error() string {
-	return e.Message
+	return e.Code
 }
 
 func (e *Error) Source() string {

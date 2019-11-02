@@ -16,7 +16,7 @@ func init() {
 }
 
 type Link struct {
-	ObjectId *primitive.ObjectID `json:"id" bson:"_id,omitempty" gorm:"primary_key"`
+	ObjectId *primitive.ObjectID `json:"id" bson:"_id,omitempty"`
 	Address  string              `bson:"address,omitempty" json:"address"`
 	Code     string              `bson:"code,omitempty" json:"code"`
 }

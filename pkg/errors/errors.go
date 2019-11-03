@@ -44,3 +44,8 @@ const InternalServerErrorCode = "internal_server_error"
 func InternalServerError() error {
 	return New(InternalServerErrorCode, "Internal server error", nil)
 }
+
+const NotFoundErrorCode = "not_found"
+func NotFoundError(msg string) error {
+	return New(NotFoundErrorCode, msg, nil)
+}

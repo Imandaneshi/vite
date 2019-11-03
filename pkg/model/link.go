@@ -21,6 +21,7 @@ type Link struct {
 	Code     string              `bson:"code,omitempty" json:"code"`
 }
 
+// TODO: move to Create
 func GenerateRandomShortenLink(address string) (*Link, error) {
 	// get a unique code
 	log.Debug("generating a random code and validating for a duplicate")
@@ -82,3 +83,14 @@ const (
 	mongoLinksCollection string = "links"
 	mongoLinksCodeIndex string = "uniqueCodeIndex"
 )
+
+func GetLink(code string) (*Link, error) {
+	var result Link
+
+	links := m.Collection(mongoLinksCollection)
+	err := links.FindOne(context.TODO(), bson.D{{"code", code}}).Decode(&result)
+	if err != nil {
+		return nil, errors.NotFoundError("Link not found")
+	}
+	return &result, nil
+}

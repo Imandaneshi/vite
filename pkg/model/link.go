@@ -15,6 +15,7 @@ func init() {
 	rand.Seed(time.Now().UnixNano())
 }
 
+// TODO: use camelcase database names
 type Link struct {
 	ObjectId *primitive.ObjectID `json:"id" bson:"_id,omitempty"`
 	Address  string              `bson:"address,omitempty" json:"address"`

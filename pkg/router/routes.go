@@ -22,4 +22,5 @@ func InitRoutes(g *gin.Engine){
 	apiRoute.POST("/links", api.CreateShortenLink)
 	// user related endpoints
 	apiRoute.POST("/users", api.Register)
+	apiRoute.POST("/login", api.Login)
 }

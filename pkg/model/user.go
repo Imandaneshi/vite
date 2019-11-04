@@ -16,8 +16,8 @@ type User struct {
 	Email     string              `bson:"email" json:"email"`
 	FirstName string              `bson:"first_name" json:"first_name"`
 	LastName  string              `bson:"last_name" json:"last_name"`
-	Password  string              `bson:"password,omitempty" json:"password"`
-	Token     string              `bson:"-" json:"token"`
+	Password  string              `bson:"password,omitempty" json:"-"`
+	Token     *Token              `bson:"-" json:"token"`
 }
 
 func (user *User) Create() error {
@@ -39,7 +39,7 @@ func (user *User) Create() error {
 		return errors.AlreadyExistsError("User with this username already exists", nil)
 	}
 
-	hashPassword, hashingError  := bcrypt.GenerateFromPassword([]byte(user.Password), bcrypt.DefaultCost)
+	hashPassword, hashingError := bcrypt.GenerateFromPassword([]byte(user.Password), bcrypt.DefaultCost)
 	if hashingError != nil {
 		log.WithFields(log.Fields{"user": user}).Info("failed in hashing password")
 		return &errors.Error{Code: "hashing_failed",
@@ -57,6 +57,39 @@ func (user *User) Create() error {
 	}
 	log.WithFields(log.Fields{"user": user}).Info("successfully inserted new user into mongo db")
 	return nil
+}
+
+
+func (user *User) ValidatePassword(password string) bool {
+	err := bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(password))
+	return err == nil
+}
+
+func getUser(filters *bson.M) (*User, error) {
+	log.WithFields(log.Fields{"filters": filters}).Debug("looking if user with such filters exists")
+
+	var user User
+	users := m.Collection(mongoUsersCollection)
+
+	err := users.FindOne(context.Background(), filters).Decode(&user)
+	if err != nil {
+		log.WithFields(log.Fields{"filters": filters}).Info("user with such filters doesn't exists in database")
+		return nil, errors.NotFoundError("user with this id doesn't exists")
+	}
+
+	log.WithFields(log.Fields{"user": user, "filters": filters}).Info("successfully found user with this ID")
+	return &user, nil
+}
+
+func GetUserById(userId string) (user *User, err error) {
+	mongoId, err := primitive.ObjectIDFromHex(userId)
+	user, err = getUser(&bson.M{"id": mongoId})
+	return
+}
+
+func GetUserByUsername(username string) (user *User, err error) {
+	user, err = getUser(&bson.M{"username": username})
+	return
 }
 
 const (

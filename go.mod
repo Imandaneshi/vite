@@ -3,6 +3,7 @@ module github.com/imandaneshi/vite
 go 1.13
 
 require (
+	github.com/appleboy/gin-jwt/v2 v2.6.2 // indirect
 	github.com/gin-gonic/contrib v0.0.0-20190923054218-35076c1b2bea
 	github.com/gin-gonic/gin v1.4.0
 	github.com/go-playground/locales v0.13.0 // indirect
@@ -13,7 +14,6 @@ require (
 	github.com/leodido/go-urn v1.2.0 // indirect
 	github.com/sirupsen/logrus v1.4.2
 	github.com/stretchr/testify v1.4.0
-	github.com/tidwall/pretty v1.0.0 // indirect
 	github.com/xdg/scram v0.0.0-20180814205039-7eeb5667e42c // indirect
 	github.com/xdg/stringprep v1.0.0 // indirect
 	go.mongodb.org/mongo-driver v1.1.2

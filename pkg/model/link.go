@@ -64,12 +64,7 @@ func GenerateRandomShortenLink(address string) (*Link, error) {
 }
 
 func getRandomCode(n int, validate bool) (string, bool) {
-	letterRunes := []rune("abcdefghijklmnopqrstuvwxyz1234567890")
-	b := make([]rune, n)
-	for i := range b {
-		b[i] = letterRunes[rand.Intn(len(letterRunes))]
-	}
-	code := string(b)
+	code := GenerateRandomString(n,"abcdefghijklmnopqrstuvwxyz1234567890")
 	if validate {
 		links := m.Collection(mongoLinksCollection)
 		err := links.FindOne(context.Background(), bson.M{"code": code})
@@ -94,4 +89,13 @@ func GetLink(code string) (*Link, error) {
 		return nil, errors.NotFoundError("Link not found")
 	}
 	return &result, nil
+}
+
+func GenerateRandomString(length int, characters string) string {
+	letterRunes := []rune(characters)
+	b := make([]rune, length)
+	for i := range b {
+		b[i] = letterRunes[rand.Intn(len(letterRunes))]
+	}
+	return string(b)
 }

@@ -51,6 +51,11 @@ func checkIndexes() (err error){
 				Options: options.Index().SetUnique(true).SetName(mongoUsersUsernameIndex),
 			},
 		},
+		mongoTokensCollection: {
+			{Keys: bsonx.Doc{{"value", bsonx.Int32(1)}},
+				Options: options.Index().SetUnique(true).SetName(mongoTokensValueIndex),
+			},
+		},
 	}
 
 	// loop over collections and create indexes for each mongo collection

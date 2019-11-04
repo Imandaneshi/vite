@@ -48,8 +48,6 @@ func Register(c *gin.Context) {
 		return
 	}
 
-	user.Password = "" // delete password
-
 	log.WithFields(logFields).Info("successfully registered a new user")
 	c.JSON(200, Response{Ok: true, Data: user})
 }

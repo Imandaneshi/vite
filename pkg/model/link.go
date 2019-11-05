@@ -20,10 +20,11 @@ type Link struct {
 	ObjectId *primitive.ObjectID `json:"id" bson:"_id,omitempty"`
 	Address  string              `bson:"address,omitempty" json:"address"`
 	Code     string              `bson:"code,omitempty" json:"code"`
+	User     string              `bson:"userId,omitempty" json:"-"`
 }
 
-// TODO: move to Create
-func GenerateRandomShortenLink(address string) (*Link, error) {
+// TODO: move to Create and refactor
+func GenerateRandomShortenLink(address string, userId string) (*Link, error) {
 	// get a unique code
 	log.Debug("generating a random code and validating for a duplicate")
 	randomCode, exists := getRandomCode(config.Server.RandomCodeLength, true)
@@ -48,12 +49,13 @@ func GenerateRandomShortenLink(address string) (*Link, error) {
 	link := &Link{
 		Address: address,
 		Code: randomCode,
+		User: userId,
 	}
 	links := m.Collection(mongoLinksCollection)
 	res, err := links.InsertOne(context.Background(), link)
 	if err != nil{
 		log.WithFields(logFields).Info("failed inserting new link into mongo db")
-		return nil, errors.New("inserting_link_failed", "Failed inserting new link", err)
+		return nil, errors.New("insertingLinkFailed", "Failed inserting new link", err)
 	}
 	if oid, ok := res.InsertedID.(primitive.ObjectID); ok {
 		link.ObjectId = &oid
@@ -75,11 +77,6 @@ func getRandomCode(n int, validate bool) (string, bool) {
 	return code, false
 }
 
-const (
-	mongoLinksCollection string = "links"
-	mongoLinksCodeIndex string = "uniqueCodeIndex"
-)
-
 func GetLink(code string) (*Link, error) {
 	var result Link
 
@@ -99,3 +96,8 @@ func GenerateRandomString(length int, characters string) string {
 	}
 	return string(b)
 }
+
+const (
+	mongoLinksCollection string = "links"
+	mongoLinksCodeIndex string = "uniqueCodeIndex"
+)

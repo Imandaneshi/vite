@@ -10,14 +10,14 @@ import (
 type createUser struct {
 	Username  string `binding:"required" json:"username" form:"username"`
 	Email     string `form:"email" json:"email"`
-	FirstName string `form:"first_name" json:"first_name"`
-	LastName  string `json:"last_name" form:"last_name"`
+	FirstName string `form:"firstName" json:"firstName"`
+	LastName  string `json:"lastName" form:"lastName"`
 	Password  string `binding:"required" json:"password" form:"password"`
 }
 
 func Register(c *gin.Context) {
 	logFields := log.Fields{
-		"type":     "api_endpoint",
+		"type":     "endpoint",
 		"endpoint": "/register",
 		"method":   "POST",
 	}
@@ -40,7 +40,7 @@ func Register(c *gin.Context) {
 	registerError := user.Create()
 	if registerError != nil {
 		switch registerError.Error() {
-		case "already_exists":
+		case "alreadyExists":
 			c.AbortWithStatusJSON(400, Response{Ok: false, Error: registerError})
 		default:
 			c.JSON(500, Response{Ok: false, Error: errors.InternalServerError()})

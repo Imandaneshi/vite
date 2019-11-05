@@ -16,7 +16,7 @@ func Redirect(c *gin.Context) {
 	link, err := model.GetLink(code)
 	if err != nil {
 		switch err.Error() {
-		case "not_found": // TODO: Redirect to home page
+		case "notFound": // TODO: Redirect to home page
 			log.WithFields(log.Fields{"code": code}).Info("link with this code doesn't exists")
 			c.AbortWithStatusJSON(404, Response{Ok: false, Error: err})
 		default:

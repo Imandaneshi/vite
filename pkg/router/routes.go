@@ -9,6 +9,8 @@ import (
 
 func InitRoutes(g *gin.Engine){
 
+	g.Use(api.AuthMiddleware())
+
 	// serve frontend static files
 	g.Use(static.Serve("/app", static.LocalFile(config.Server.StaticPath, true)))
 
@@ -22,5 +24,5 @@ func InitRoutes(g *gin.Engine){
 	apiRoute.POST("/links", api.CreateShortenLink)
 	// user related endpoints
 	apiRoute.POST("/users", api.Register)
-	apiRoute.POST("/login", api.Login)
+	apiRoute.POST("/auth", api.Login)
 }

@@ -25,5 +25,5 @@ func prepareTestDatabase() error {
 }
 
 const (
-	testMongoDatabase = "vite_test_database"
+	testMongoDatabase = "viteTestDatabase"
 )

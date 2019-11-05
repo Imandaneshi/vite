@@ -2,6 +2,7 @@ package model
 
 import (
 	"context"
+	"github.com/imandaneshi/vite/pkg/config"
 	"github.com/imandaneshi/vite/pkg/errors"
 	log "github.com/sirupsen/logrus"
 	"go.mongodb.org/mongo-driver/bson"
@@ -9,6 +10,7 @@ import (
 	"time"
 )
 
+// Token is where we hold our tokens and token's owner id
 type Token struct {
 	ObjectId *primitive.ObjectID `json:"-" bson:"_id,omitempty"`
 	Value    string              `bson:"value,omitempty" json:"value"`
@@ -17,10 +19,12 @@ type Token struct {
 	Expires  *time.Time          `bson:"expires,omitempty" json:"expires"`
 }
 
+// Create generates a new unique for the specified user
 func (token *Token) Create() error {
-	token.Value = GenerateRandomString(16, "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")
+	token.Value = GenerateRandomString(30, "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")
 	now := time.Now()
-	expires := time.Now().Add(time.Hour * 192) // 8 days
+	tokenttl := time.Hour * time.Duration(config.Server.TokenTimeToLive)
+	expires := time.Now().Add(time.Hour * tokenttl)
 	token.Created = &now
 	token.Expires = &expires
 
@@ -28,7 +32,7 @@ func (token *Token) Create() error {
 	res, insertErr := tokens.InsertOne(context.Background(), token)
 	if insertErr != nil {
 		log.WithFields(log.Fields{"token": token}).Info("failed inserting new token into mongo db")
-		return errors.New("inserting_token_failed", "Failed inserting new token", insertErr)
+		return errors.New("insertingTokenFailed", "Failed inserting new token", insertErr)
 	}
 	if oid, ok := res.InsertedID.(primitive.ObjectID); ok {
 		token.ObjectId = &oid

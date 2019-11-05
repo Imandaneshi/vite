@@ -66,6 +66,13 @@ func Server() *cli.Command {
 				EnvVars:     []string{"VITE_CODE_LENGTH"},
 				Destination: &config.Server.RandomCodeLength,
 			},
+			&cli.IntFlag{
+				Name:        "token-ttl",
+				Value:       24 * 8,
+				Usage:       "Auth token time to live in hours",
+				EnvVars:     []string{"VITE_TOKEN_TTL"},
+				Destination: &config.Server.TokenTimeToLive,
+			},
 		},
 		Action: func(c *cli.Context) error {
 			ginEngine := gin.Default()

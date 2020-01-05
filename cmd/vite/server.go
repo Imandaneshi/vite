@@ -26,7 +26,7 @@ func Server() *cli.Command {
 		Flags: []cli.Flag{
 			&cli.StringFlag{
 				Name:        "mongo-uri",
-				Value:       "mongodb://localhost:27017",
+				Value:       "mongodb://localhost:27019",
 				Usage:       "Mongo database uri",
 				EnvVars:     []string{"VITE_MONGO_URI"},
 				Destination: &config.Database.Uri,

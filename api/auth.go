@@ -77,14 +77,14 @@ func Login(c *gin.Context) {
 	} else {
 		// create a unique token for user
 		token := &model.Token{}
-		token.User = user.ObjectId.Hex()
+		token.User = user.ObjectId
 		err := token.Create()
 		if err != nil {
 			c.AbortWithStatusJSON(500, Response{Ok: false, Error: errors.InternalServerError()})
 			return
 		}
 		user.Token = token
-		c.JSON(200, user)
+		c.JSON(200, Response{true, user, nil})
 	}
 
 }

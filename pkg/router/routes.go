@@ -22,6 +22,7 @@ func InitRoutes(g *gin.Engine){
 
 	// endpoint for shortening the link
 	apiRoute.POST("/links", api.CreateShortenLink)
+	apiRoute.DELETE("/links/:code", api.DeleteLink)
 	// user related endpoints
 	apiRoute.POST("/users", api.Register)
 	apiRoute.POST("/auth", api.Login)

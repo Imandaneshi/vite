@@ -82,9 +82,8 @@ func getUser(filters *bson.M) (*User, error) {
 	return &user, nil
 }
 
-func GetUserById(userId string) (user *User, err error) {
-	mongoId, err := primitive.ObjectIDFromHex(userId)
-	user, err = getUser(&bson.M{"_id": mongoId})
+func GetUserById(userId *primitive.ObjectID) (user *User, err error) {
+	user, err = getUser(&bson.M{"_id": userId})
 	return
 }
 

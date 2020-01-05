@@ -46,6 +46,7 @@ func main() {
 		Name:      "Vite",
 		Usage:     "vite web server",
 		Compiled:  time.Now(),
+		Version: "0.3",
 		Authors: []*cli.Author{
 			{
 				Name:  "Iman Daneshi",

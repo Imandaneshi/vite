@@ -34,7 +34,7 @@ func CreateShortenLink(c *gin.Context) {
 		return
 	}
 
-	link, err := model.GenerateRandomShortenLink(json.Address, user.ObjectId.Hex())
+	link, err := model.GenerateRandomShortenLink(json.Address, user.ObjectId)
 	if err != nil {
 		c.JSON(500, Response{Ok: false, Error: errors.InternalServerError()})
 		return

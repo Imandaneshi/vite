@@ -20,11 +20,23 @@ type Link struct {
 	ObjectId *primitive.ObjectID `json:"id" bson:"_id,omitempty"`
 	Address  string              `bson:"address,omitempty" json:"address"`
 	Code     string              `bson:"code,omitempty" json:"code"`
-	User     string              `bson:"userId,omitempty" json:"-"`
+	User     *primitive.ObjectID              `bson:"userId,omitempty" json:"-"`
+}
+
+func (link *Link) Delete() error {
+	links := m.Collection(mongoLinksCollection)
+	deleteResult, deleteError := links.DeleteOne(context.TODO(), bson.M{"_id": link.ObjectId})
+	if deleteError != nil {
+		return errors.New("failedDeletingLink", "failed while deleting link from database", deleteError)
+	}
+	if deleteResult.DeletedCount != 1 {
+		return errors.New("failedDeletingLink", "failed while deleting link from database", nil)
+	}
+	return nil
 }
 
 // TODO: move to Create and refactor
-func GenerateRandomShortenLink(address string, userId string) (*Link, error) {
+func GenerateRandomShortenLink(address string, userId *primitive.ObjectID) (*Link, error) {
 	// get a unique code
 	log.Debug("generating a random code and validating for a duplicate")
 	randomCode, exists := getRandomCode(config.Server.RandomCodeLength, true)

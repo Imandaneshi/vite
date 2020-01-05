@@ -20,8 +20,12 @@ func SetupMongo() error {
 	clientOptions := options.Client().ApplyURI(config.Database.Uri)
 	client, err := mongo.Connect(context.TODO(), clientOptions)
 	if err != nil {
-		log.Error("failed connecting to mongodb:", err)
+		log.Fatal("failed connecting to mongodb:", err)
 		return err
+	}
+	pingError := client.Ping(context.TODO(), nil)
+	if pingError != nil {
+		log.Fatal("failed pinging mongodb:", err)
 	}
 	log.Info("successfully connected to mongodb")
 

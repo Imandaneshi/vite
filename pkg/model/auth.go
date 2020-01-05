@@ -14,7 +14,7 @@ import (
 type Token struct {
 	ObjectId *primitive.ObjectID `json:"-" bson:"_id,omitempty"`
 	Value    string              `bson:"value,omitempty" json:"value"`
-	User     string              `bson:"userId,omitempty" json:"-"`
+	User     *primitive.ObjectID              `bson:"userId,omitempty" json:"-"`
 	Created  *time.Time          `bson:"created,omitempty" json:"created"`
 	Expires  *time.Time          `bson:"expires,omitempty" json:"expires"`
 }
@@ -24,7 +24,7 @@ func (token *Token) Create() error {
 	token.Value = GenerateRandomString(30, "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")
 	now := time.Now()
 	tokenttl := time.Hour * time.Duration(config.Server.TokenTimeToLive)
-	expires := time.Now().Add(time.Hour * tokenttl)
+	expires := time.Now().Add(tokenttl)
 	token.Created = &now
 	token.Expires = &expires
 

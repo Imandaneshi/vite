@@ -40,6 +40,9 @@ func CreateShortenLink(c *gin.Context) {
 		return
 	}
 
+	// FIXME: This is wrong
+	go link.Scrape()
+
 	log.WithFields(logFields).Info("successfully created a shorten link")
 	c.JSON(200, Response{Ok: true, Data: link})
 }

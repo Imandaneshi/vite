@@ -38,6 +38,11 @@ func AlreadyExistsError(msg string, err error, arg ...interface{}) error {
 	return New(alreadyExistsCode, fmt.Sprintf(msg, arg...), err)
 }
 
+const ConnectionErrorCode = "ConnectionError"
+func ConnectionError(msg string, err error, arg ...interface{}) error {
+	return New(ConnectionErrorCode, fmt.Sprintf(msg, arg...), err)
+}
+
 const validationErrorCode = "validationError"
 func ValidationError(msg string, err error, arg ...interface{}) error {
 	return New(validationErrorCode, fmt.Sprintf(msg, arg...), err)
